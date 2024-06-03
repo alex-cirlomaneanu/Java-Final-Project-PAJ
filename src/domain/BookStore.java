@@ -1,6 +1,9 @@
 // BookStore.java
 package domain;
 
+import exceptions.AlreadyExistingClientException;
+import exceptions.BookStockException;
+
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Predicate;
@@ -8,8 +11,8 @@ import java.util.stream.Collectors;
 
 public class BookStore {
 	private final List<Book> inventory = new ArrayList<>();
-	private final List<Client> clients = new ArrayList<>();
-	private final List<Order> orders = new ArrayList<>();
+	private final Set<Client> clients = new TreeSet<>(Comparator.comparing(Client::getName));
+	private final List<Order> orders = new CopyOnWriteArrayList<>();
 	private final ExecutorService executorService = Executors.newFixedThreadPool(10);
 
 	public void addBook(Book book) {
@@ -17,16 +20,24 @@ public class BookStore {
 	}
 
 	public void addCustomer(Client client) {
-		clients.add(client);
+		if (!clients.add(client)) {
+			throw new AlreadyExistingClientException(client.getName());
+		}
 	}
 
 	public void placeOrder(Client client, List<Book> books) {
+		for (Book book : books) {
+			if (book.getStock() <= 0) {
+				throw new BookStockException(book.getTitle());
+			}
+		}
+
 		executorService.submit(() -> {
 			Order order = new Order(client, books);
+			books.forEach(book -> book.setStock(book.getStock() - 1));
 			orders.add(order);
 			client.getBooks().addAll(books);
-			books.forEach(book -> book.setStock(book.getStock() - 1));
-			System.out.println("Order placed: " + order);
+			System.out.println("Order no." + orders.size() +" placed: " + order);
 		});
 	}
 
@@ -38,12 +49,11 @@ public class BookStore {
 		executorService.shutdown();
 	}
 
-	// Getters for unit tests
 	public List<Book> getInventory() {
 		return inventory;
 	}
 
-	public List<Client> getClients() {
+	public Set<Client> getClients() {
 		return clients;
 	}
 
@@ -53,5 +63,9 @@ public class BookStore {
 
 	public void removeBook(Book book) {
 		inventory.remove(book);
+	}
+
+	public ExecutorService getExecutorService() {
+		return executorService;
 	}
 }
