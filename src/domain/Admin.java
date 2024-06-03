@@ -6,7 +6,6 @@ public class Admin extends User {
 	private BookStore bookStore;
 	private final BookStoreReport bookStoreReport;
 
-
 	public Admin(String id, String name, String email, BookStore bookStore) {
 		super(id, name, email);
 		this.bookStore = bookStore;

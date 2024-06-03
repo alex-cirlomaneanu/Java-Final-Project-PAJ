@@ -17,12 +17,12 @@ public class BookStoreLoadData {
 	private static void addSampleOrders(BookStore bookStore) {
 		List<Client> clients = bookStore.getClients().stream().toList();
 		List<Book> books = bookStore.getInventory().stream().toList();
-		bookStore.placeOrder(clients.get(0), books.subList(0, 2));
-		bookStore.placeOrder(clients.get(1), books.subList(2, 4));
-		bookStore.placeOrder(clients.get(2), books.subList(4, 6));
-		bookStore.placeOrder(clients.get(3), books.subList(0, 3));
-		bookStore.placeOrder(clients.get(4), books.subList(3, 6));
-		bookStore.placeOrder(clients.get(5), books.subList(1, 5));
+		bookStore.placeOrder(clients.get(0), books.subList(0, 2)); //2 books
+		bookStore.placeOrder(clients.get(1), books.subList(2, 4)); //2 books
+		bookStore.placeOrder(clients.get(2), books.subList(4, 6)); //2 books
+		bookStore.placeOrder(clients.get(3), books.subList(0, 3)); //3 books
+		bookStore.placeOrder(clients.get(4), books.subList(3, 6)); //3 books
+		bookStore.placeOrder(clients.get(5), books.subList(1, 5)); //4 books
 	}
 
 	private static void addSampleClients(BookStore bookStore) {
