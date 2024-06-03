@@ -36,7 +36,7 @@ public class TestBookStoreReport extends BasicTest {
 	}
 
 	@Test
-	public void testGetNumberOfBooksPurchased() throws InterruptedException {
+	public void testGetNumberOfBooksPurchased() {
 		assertEquals(16, ((Admin) admin).getBookStoreReport().getNumberOfBooksPurchased());
 	}
 
@@ -69,11 +69,11 @@ public class TestBookStoreReport extends BasicTest {
 		Client dianaWhite = customerBooks.keySet().stream()
 				.filter(client -> client.getName().equals("Diana White"))
 				.findFirst()
-				.orElse(null);;
+				.orElse(null);
 		Client bobBrown = customerBooks.keySet().stream()
 				.filter(client -> client.getName().equals("Bob Brown"))
 				.findFirst()
-				.orElse(null);;
+				.orElse(null);
 
 		assertTrue(customerBooks.containsKey(aliceSmith));
 		assertTrue(customerBooks.containsKey(dianaWhite));

@@ -3,7 +3,7 @@ package domain;
 import service.BookStoreReport;
 
 public class Admin extends User {
-	private BookStore bookStore;
+	private final BookStore bookStore;
 	private final BookStoreReport bookStoreReport;
 
 	public Admin(String id, String name, String email, BookStore bookStore) {
